@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Calculate";
+}
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title>Calculator</title>
+</head>
+
+<body>
+    <h2>Calculate Duration Between Two Dates</h2>
+    <form id="calcForm">
+        Enter a start date:<br>
+        <input id="startDate" type="date" name="startDate"><br><br>
+        Enter an end date:<br>
+        <input id="endDate" type="date" name="endDate"><br><br>
+        <input id="submit" type="submit" value="Calculate" />
+    </form>
+</body>
+
+<script type="text/javascript">
+    $("#calcForm").submit(function (event) {
+
+        /* stop form from submitting normally */
+        event.preventDefault();
+
+        $.ajax({
+            type: "POST",
+            url: '/DateDiffCalculator/CalculateDateDiff',
+            data: "{'startDate':'" + $('#startDate').val() + "','endDate':'" + $('#endDate').val() + "'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: successFunc,
+            error: errorFunc
+        });
+
+        function successFunc(data) {
+            alert(data);
+        }
+
+        function errorFunc(data) {
+            console.log('error: ' + data.responseText);
+        }
+    });
+</script>
+
